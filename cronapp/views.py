@@ -34,17 +34,15 @@ class CronEggViewSet(viewsets.ViewSet):
         """
         data = JSONParser().parse(request)
         serializer = CronEggSerializer(data=data)
-        #print(data)
         egg = File.objects.get(id=data['egg'])
         print(egg.file_name)
-#        if egg and serializer.is_valid():
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
             new_cron = CronEgg.objects.latest('id')
             response_text = {'cron_job_id': new_cron.id}
             return JsonResponse(response_text, status=201, safe=True)
         else:
-            response_text = {'error': 'the cron string is not valid'}
+            response_text = {'error': serializer.errors}
             JsonResponse(response_text,status=400)
         return JsonResponse(serializer.errors, status=400)
 
