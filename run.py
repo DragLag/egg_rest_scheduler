@@ -2,7 +2,7 @@ import os
 import logging
 from multiprocessing import Process
 from django.core.management import execute_from_command_line
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('db')
 
 
 def call_command(*args):

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'rest_framework',
     'background_task',
+    'django_db_logger',
     'viewerapp',
     'uploadapp',
     'cronapp'
@@ -149,26 +150,21 @@ LOGGING = {
     'formatters': {
         'verbose': {
             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{',
         },
         'simple': {
             'format': '{levelname} {message}',
-            'style': '{',
         },
     },
     'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'logfile.log',
-            'formatter': 'verbose',
+        'db_log': {
+            'level': 'DEBUG',
+            'class': 'django_db_logger.db_log_handler.DatabaseLogHandler',
         },
     },
     'loggers': {
-        'django': {
-            'handlers': ['file'],
+        'db': {
+            'handlers': ['db_log'],
             'level': 'DEBUG',
-            'propagate': True,
         },
     },
 }

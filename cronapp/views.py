@@ -6,6 +6,8 @@ from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from .models import CronEgg
 from uploadapp.models import File
+import logging
+logger = logging.getLogger('db')
 
 class CronEggViewSet(viewsets.ViewSet):
     serializer_class = CronEggSerializer
@@ -31,6 +33,7 @@ class CronEggViewSet(viewsets.ViewSet):
             serializer.save()
             new_cron = CronEgg.objects.latest('id')
             response_text = {'cron_job_id': new_cron.id}
+            logger.info("{} egg scheduled at: {} ".format(data['egg'], data['cron_string']))
             return JsonResponse(response_text, status=201, safe=True)
         else:
             response_text = {'error': serializer.errors}

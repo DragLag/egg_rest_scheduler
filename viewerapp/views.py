@@ -10,7 +10,8 @@ import os
 from background_task.models import Task
 from uploadapp.models import File
 
-
+import logging
+logger = logging.getLogger('db')
 
 class EggsViewSet(viewsets.ViewSet):
     queryset = File.objects.all()
@@ -35,6 +36,7 @@ class EggsViewSet(viewsets.ViewSet):
         if serializer.is_valid():
             exec_path = os.path.join(settings.MEDIA_ROOT, serializer.data['file_name'])
             run_egg(exec_path)
+            logger.info(data['file_name'] + " executed per rest")
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 
