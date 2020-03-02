@@ -6,6 +6,8 @@ from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from .models import CronEgg
 from uploadapp.models import File
+from cron_descriptor import get_description
+
 import logging
 logger = logging.getLogger('db')
 
@@ -28,12 +30,11 @@ class CronEggViewSet(viewsets.ViewSet):
         data = JSONParser().parse(request)
         serializer = CronEggSerializer(data=data)
         egg = File.objects.get(id=data['egg'])
-        print(egg.file_name)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             new_cron = CronEgg.objects.latest('id')
             response_text = {'cron_job_id': new_cron.id}
-            logger.info("{} egg scheduled at: {} ".format(data['egg'], data['cron_string']))
+            logger.info("{} egg scheduled : {} ".format(data['egg'], get_description(data['cron_string'])))
             return JsonResponse(response_text, status=201, safe=True)
         else:
             response_text = {'error': serializer.errors}
@@ -59,6 +60,7 @@ class CronEggViewSet(viewsets.ViewSet):
             egg.cron_string = data['cron_string']
             egg.save()
             response_text = {'cron_job_id': egg.id}
+            logger.info("{} egg trigger updated : {} ".format(data['egg'], get_description(data['cron_string'])))
             return JsonResponse(response_text, status=201, safe=True)
         response_text = {'message': 'trigger was not updated'}
         return JsonResponse(response_text, status=400, safe = True)
@@ -72,6 +74,7 @@ class CronEggViewSet(viewsets.ViewSet):
         if egg:
             egg.delete()
             response_text = {'message': 'trigger deleted correctly'}
+            logger.info(" trigger {} deleted ".format(pk))
             return JsonResponse(response_text, status=201, safe=True)
         response_text = {'message': 'trigger does not exists'}
         return JsonResponse(response_text, status=400, safe=True)
