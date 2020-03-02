@@ -38,13 +38,7 @@ class EggsViewSet(viewsets.ViewSet):
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 
-    @action(detail=False, methods=['GET'])
-    def run_scheduler(self, request):
-        """
-        Start the scheduler
-        """
-        scheduled_egg(repeat = 60)
-        return JsonResponse({"message":"scheduler started"}, status= 201)
+scheduled_egg(repeat = 60)
 
 class TasksViewSet(viewsets.ViewSet):
     """

@@ -20,15 +20,7 @@ the run() method is the execution method for the egg.
 
 to run the application:
 
-python manage.py runserver
-
-to execute the schuduler tasks
-
-python manage.py process_tasks --queue scheduler
-
-to execute the jobs
-
-python manage.py process_tasks --queue jobs
+python run.py
 
 
 the api are documented on localhost:8000/docs/

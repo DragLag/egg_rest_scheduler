@@ -21,6 +21,7 @@ if __name__ == "__main__":
     scheduler = Process(target=call_command, args=(args_scheduler,))
     jobs = Process(target=call_command, args=(args_jobs,))
     django_server.start()
-    scheduler.start()
     jobs.start()
+    scheduler.start()
+
 
