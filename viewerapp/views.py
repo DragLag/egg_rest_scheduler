@@ -3,11 +3,12 @@ from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import action
 from rest_framework import viewsets
-from .serializers import ViewerFileSerializer, RunEggSerializer, TasksSerializer#, CompletedTasksSerializer
+from .serializers import ViewerFileSerializer, RunEggSerializer, TaskSerializer, CompletedTaskdSerializer
 from .tasks import run_egg, scheduled_egg
 from django.conf import settings
 import os
 from background_task.models import Task
+from background_task.models_completed import CompletedTask
 from uploadapp.models import File
 
 import logging
@@ -48,12 +49,28 @@ class TasksViewSet(viewsets.ViewSet):
     List all the uploaded eggs .
     """
     queryset = Task.objects.all()
-    serializer_class = TasksSerializer()
+    serializer_class = TaskSerializer()
 
     def list(self, request):
         """
         List all the executed jobs
         """
         queryset = Task.objects.all()
-        serializer = TasksSerializer(queryset, many=True)
+        serializer = TaskSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+class TaskCompletedViewSet(viewsets.ViewSet):
+    """
+    retrieve:
+    List all the uploaded eggs .
+    """
+    queryset = CompletedTask.objects.all()
+    serializer_class = CompletedTaskdSerializer()
+
+    def list(self, request):
+        """
+        List all the completed executed jobs
+        """
+        queryset = Task.objects.all()
+        serializer = CompletedTaskdSerializer(queryset, many=True)
         return Response(serializer.data)

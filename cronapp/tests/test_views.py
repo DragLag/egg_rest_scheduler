@@ -45,3 +45,8 @@ response6 = client.post(url, data = json.dumps({"egg": 1, "cron_string": "* ****
 print(response6.text)
 print(response6.status_code)
 assert response6.status_code == 400
+
+response7 = client.post(url, data = json.dumps({"egg": 1, "cron_string": "* ******** * * *"}))
+print(response7.text)
+print(response7.status_code)
+assert response7.status_code == 400

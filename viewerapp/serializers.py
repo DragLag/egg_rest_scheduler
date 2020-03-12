@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from uploadapp.models import File
 from background_task.models import Task
+from background_task.models_completed import CompletedTask
 
 
 class ViewerFileSerializer(serializers.ModelSerializer):
@@ -15,8 +16,15 @@ class RunEggSerializer(serializers.ModelSerializer):
         fields = ['file_name']
 
 
-class TasksSerializer(serializers.ModelSerializer):
+class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         #fields = ('id', 'task_name', 'run_at', 'last_error')
         fields = '__all__'
+
+class CompletedTaskdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CompletedTask
+        #fields = ('id', 'task_name', 'run_at', 'last_error')
+        fields = '__all__'
+
