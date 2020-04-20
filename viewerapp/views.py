@@ -41,7 +41,7 @@ class EggsViewSet(viewsets.ViewSet):
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 
-scheduled_egg(repeat = 60)
+#scheduled_egg(repeat = 60)
 
 class TasksViewSet(viewsets.ViewSet):
     """
